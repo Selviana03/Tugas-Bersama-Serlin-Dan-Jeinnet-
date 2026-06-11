@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Studi Kasus OOP: Sistem E-Commerce Shopee</title>
+    <style>
+        /* Tema Langit Malam */
+        body {
+            background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+            color: #d1d1d1;
+            font-family: 'Segoe UI', sans-serif;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: rgba(20, 20, 40, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px solid #4a4a8c;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+        h1, h2 { color: #ffd700; }
+        .identitas { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-bottom: 20px; }
+        .section { margin-bottom: 30px; border-bottom: 1px solid #444; padding-bottom: 20px; }
+        pre { 
+            background: #000; 
+            color: #00ff00; 
+            padding: 15px; 
+            border-radius: 8px; 
+            overflow-x: auto; 
+            border-left: 5px solid #ffd700;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Studi Kasus: Sistem Penjualan E-Commerce Shopee</h1>
+    
+    <div class="identitas">
+        <strong>Penyusun:</strong><br>
+        1. Serlin Selviana Giay (251410030) | Kelas: SI2A<br>
+        2. Jeinnet Verara Ayomi (251410033) | Kelas: SI2A
+    </div>
+
+    <div class="section">
+        <h2>1. Latar Belakang Shopee</h2>
+        <p>Shopee merupakan platform e-commerce terdepan di Asia Tenggara yang menghubungkan jutaan pembeli dan penjual. Dengan volume transaksi yang masif setiap detiknya, Shopee menghadapi tantangan manajemen data yang sangat kompleks, mulai dari inventaris barang, manajemen keranjang, hingga proses autentikasi pengguna. Tanpa sistem yang terstruktur, pengembangan fitur baru menjadi sangat berisiko (rawan <i>bug</i>) dan sulit dipelihara. Oleh karena itu, penerapan paradigma <i>Object-Oriented Programming</i> (OOP) menjadi kebutuhan mutlak agar arsitektur sistem tetap skalabel dan efisien.</p>
+    </div>
+
+    <div class="section">
+        <h2>2. Mengapa Masalah Ini Lebih Baik Diselesaikan dengan OOP?</h2>
+        <p>Pendekatan OOP menawarkan solusi atas kompleksitas sistem e-commerce melalui:</p>
+        <ul>
+            <li><b>Encapsulation:</b> Menyembunyikan detail sensitif (seperti saldo atau informasi pembayaran) di dalam objek untuk menjaga keamanan.</li>
+            <li><b>Inheritance:</b> Memungkinkan pembuatan kategori produk (elektronik, fashion, dsb) secara hierarkis, yang efisien dalam penulisan kode.</li>
+            <li><b>Abstraction:</b> Menyederhanakan proses kompleks (seperti kalkulasi pajak atau checkout) menjadi method yang mudah dipanggil.</li>
+            <li><b>Modularity:</b> Memungkinkan tim pengembang bekerja pada bagian sistem yang berbeda tanpa saling merusak fungsi satu sama lain.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>3. Langkah-Langkah Menyelesaikan Masalah</h2>
+        <ol>
+            <li><b>Analisis:</b> Mengidentifikasi objek utama (User, Product, Cart, Transaction).</li>
+            <li><b>Desain Kelas:</b> Menentukan atribut dan method berdasarkan prinsip OOP.</li>
+            <li><b>Pemecahan Modul:</b> Membagi fungsi ke dalam 5 file kode terpisah untuk menjaga kebersihan sistem (Clean Code).</li>
+            <li><b>Implementasi & Relasi:</b> Menghubungkan antar objek (misal: Cart berisi daftar Produk).</li>
+            <li><b>Pengujian:</b> Memastikan sistem berjalan sesuai alur transaksi e-commerce.</li>
+        </ol>
+    </div>
+
+    <h2>Source Code Terpisah</h2>
+
+    <div class="section">
+        <h3>Source Code 1: product.dart (Abstraksi)</h3>
+        <pre>abstract class Product {
+  String name;
+  double price;
+  Product(this.name, this.price);
+  void displayInfo();
+}</pre>
+    </div>
+
+    <div class="section">
+        <h3>Source Code 2: electronic.dart (Inheritance)</h3>
+        <pre>import 'product.dart';
+class Electronic extends Product {
+  Electronic(String name, double price) : super(name, price);
+  @override
+  void displayInfo() => print("Elektronik: $name - Rp$price");
+}</pre>
+    </div>
+
+    <div class="section">
+        <h3>Source Code 3: cart.dart (Composition)</h3>
+        <pre>import 'product.dart';
+class Cart {
+  List&lt;Product&gt; items = [];
+  void addItem(Product p) => items.add(p);
+  double getTotal() => items.fold(0, (s, i) => s + i.price);
+}</pre>
+    </div>
+
+    <div class="section">
+        <h3>Source Code 4: user.dart (Encapsulation)</h3>
+        <pre>import 'cart.dart';
+class User {
+  String _name;
+  Cart cart = Cart();
+  User(this._name);
+  String get name => _name;
+}</pre>
+    </div>
+
+    <div class="section">
+        <h3>Source Code 5: main.dart (Eksekusi)</h3>
+        <pre>import 'user.dart';
+import 'electronic.dart';
+
+void main() {
+  var user = User("Serlin & Jeinnet");
+  user.cart.addItem(Electronic("Smartphone", 5000000));
+  print("Total Pembayaran: Rp${user.cart.getTotal()}");
+}</pre>
+    </div>
+
+</div>
+
+</body>
+</html>
